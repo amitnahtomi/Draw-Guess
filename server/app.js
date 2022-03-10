@@ -18,19 +18,21 @@ const io = require("socket.io")(http, {
   }
 
 io.on("connection", (socket) => {
-    console.log(socket.id);
     socket.on("user", (user)=>{
         users.push(user)
         io.emit("userUpdate", users);
     })
 
+    socket.on("newGuess", (details)=>{
+        console.log(details);
+        io.to(details.partner).emit("guess", {draw: details.draw, word: details.word})
+    })
+
     socket.on("gameRequest", (player)=>{
-        console.log(player);
         io.to(player.id).emit("sendGameReq", {id: getId(player.fromUsername), username: player.fromUsername})
     })
 
     socket.on("acceptInvitation", (details)=>{
-        console.log(details);
         io.to(getId(details.from.username)).emit("startGame")
         io.to(getId(details.to.username)).emit("startGame")
     })

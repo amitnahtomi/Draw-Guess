@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
+import Game from "./game";
 
 const connection = io("http://localhost:4000")
 
@@ -9,6 +10,7 @@ export default function App() {
   const [usersList, setUsersList] = useState([]);
   const [gameInvitation, setGameInvitation] = useState(true)
   const [partner, setPartner] = useState({username: "", id: ""})
+  const [firstTurn, setFirstTurn] = useState("")
   const username = useRef(null)
   const selectPlayer = useRef(null)
 
@@ -25,10 +27,12 @@ export default function App() {
       console.log(user);
     connection.emit("gameRequest", {id: selectPlayer.current.value, username: selectPlayer.current.innerText, fromId: user.id, fromUsername: user.username})
     setPartner({id: selectPlayer.current.value, username: selectPlayer.current.innerText})
+    setFirstTurn("my turn")
   }
 
   const exceptGameInvitation = () => {
       connection.emit("acceptInvitation", {from: user, to: partner})
+      setFirstTurn("waiting")
       setGameInvitation(false)
   }
 
@@ -77,6 +81,6 @@ export default function App() {
     </div>
   }
   else if(view === "game"){
-      return <div>game</div>
+      return <Game connection={connection} firstTurn={firstTurn} partner={partner} />
   }
 }
