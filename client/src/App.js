@@ -13,14 +13,20 @@ export default function App() {
   const [firstTurn, setFirstTurn] = useState("")
   const username = useRef(null)
   const selectPlayer = useRef(null)
+  const nameReaction = useRef(null)
 
-  const setUserInfo = () => {
+  const setUserInfo = async () => {
+    /*for(let i = 0; i < usersList.length; i++){
+      if(usersList[i].username === username.current.value){
+        nameReaction.current.hidden = false
+        username.current.value = ""
+        return
+      }
+    }*/
     setUser({id: user.id, username: username.current.value});
-    if(!connection.active) {
-      connection.connect();
-    }
     connection.emit("user", {id: connection.id, username: username.current.value})
     setView("select player")
+    setGameInvitation(true)
   }
 
   const sendGameInvitation = () => {
@@ -30,10 +36,14 @@ export default function App() {
     setFirstTurn("my turn")
   }
 
-  const exceptGameInvitation = () => {
+  const acceptGameInvitation = () => {
       connection.emit("acceptInvitation", {from: user, to: partner})
       setFirstTurn("waiting")
       setGameInvitation(false)
+  }
+
+  const declineGameInvitation = () => {
+    connection.emit("wrong", {id: connection.id, partnerId: partner.id})
   }
 
   useEffect(()=>{ 
@@ -52,16 +62,18 @@ export default function App() {
         setView("game")
     })
 
+    connection.on("gameOver", ()=>{
+      setView("select player")
+      setGameInvitation(true)
+    })
+
   },[])
 
   if(view === "welcome"){
-      return <div>
+      return <div style={{textAlign: "center"}}>
       <input type={"text"} ref={username} placeholder={"Select your user name"}></input>
       <button onClick={setUserInfo}>Log in</button>
-      <div hidden={gameInvitation}>
-          <div>you got a game invitation</div>
-          <button onClick={exceptGameInvitation}>except invitation</button>
-      </div>
+      <div hidden={true} ref={nameReaction}>Name already exists</div>
       </div>
   }
   else if(view === "select player") {
@@ -76,11 +88,12 @@ export default function App() {
     <button onClick={sendGameInvitation}>send invitation</button>
     <div hidden={gameInvitation}>
           <div>you got a game invitation</div>
-          <button onClick={exceptGameInvitation}>except invitation</button>
+          <button onClick={acceptGameInvitation}>accept invitation</button>
+          <button onClick={declineGameInvitation}>decline invitation</button>
       </div>
     </div>
   }
   else if(view === "game"){
-      return <Game connection={connection} firstTurn={firstTurn} partner={partner} />
+      return <Game connection={connection} firstTurn={firstTurn} partner={partner} quitGame={declineGameInvitation} />
   }
 }

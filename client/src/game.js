@@ -13,6 +13,8 @@ export default function Game(props) {
     const selectedDificulity = useRef(null)
     const drawWord = useRef(null)
     const canvasDraw = useRef(null)
+    const guessInput = useRef(null)
+    const guessReaction = useRef(null)
 
     const setDificulity = () => {
         wordsSelection.current.hidden = false
@@ -37,6 +39,19 @@ export default function Game(props) {
     const sendGuess = () => {
         props.connection.emit("newGuess", ({partner: props.partner.id, draw: canvasDraw.current.toDataURL(), word: selectedWord}))
         setView("waiting")
+    }
+
+    const checkGuess = () => {
+        if(guessInput.current.value === guess.word){
+            setView("my turn")
+        }
+        else {
+            guessReaction.current.hidden = false
+            setTimeout(()=>{
+                guessReaction.current.hidden = true
+            },1500)
+            return
+        }
     }
 
     useEffect(()=>{
@@ -72,16 +87,22 @@ export default function Game(props) {
                     <button onClick={()=>{canvasDraw.current.clear()}}>clear</button>
                     <button onClick={sendGuess}>send</button>
             </div>
+            <button onClick={props.quitGame}>quit game</button>
         </div>
     }
     else if(view === "waiting") {
-        return <div>waiting</div>
+        return <div>
+            <div>waiting</div>
+            <button onClick={props.quitGame}>quit game</button>
+        </div>
     }
     else if(view === "guessing"){
         return <div>
             <img style={{border: "2px solid black"}} alt="shit" src={guess.draw}></img>
-            <input placeholder="What is your guess" type={"text"}></input>
-            <button>send</button>
+            <input ref={guessInput} placeholder="What is your guess" type={"text"}></input>
+            <button onClick={checkGuess}>send</button>
+            <div ref={guessReaction} hidden={true}>wrong</div>
+            <button onClick={props.quitGame}>quit game</button>
         </div>
     }
 }
