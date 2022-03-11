@@ -1,6 +1,5 @@
 const app = require("express")();
 const http = require("http").createServer(app);
-const cors = require('cors')
 const io = require("socket.io")(http, {
     cors: {
       origin: '*',
@@ -30,8 +29,7 @@ io.on("connection", (socket) => {
     })
 
     socket.on("newGuess", (details)=>{
-        console.log(details);
-        io.to(details.partner).emit("guess", {draw: details.draw, word: details.word})
+        io.to(details.partner).emit("guess", {draw: details.draw, word: details.word, currentScore: details.currentScore, addScore: details.addScore})
     })
 
     socket.on("gameRequest", (player)=>{

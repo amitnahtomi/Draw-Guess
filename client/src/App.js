@@ -16,21 +16,12 @@ export default function App() {
   const nameReaction = useRef(null)
 
   const setUserInfo = async () => {
-    /*for(let i = 0; i < usersList.length; i++){
-      if(usersList[i].username === username.current.value){
-        nameReaction.current.hidden = false
-        username.current.value = ""
-        return
-      }
-    }*/
     setUser({id: user.id, username: username.current.value});
     connection.emit("user", {id: connection.id, username: username.current.value})
     setView("select player")
-    setGameInvitation(true)
   }
 
   const sendGameInvitation = () => {
-      console.log(user);
     connection.emit("gameRequest", {id: selectPlayer.current.value, username: selectPlayer.current.innerText, fromId: user.id, fromUsername: user.username})
     setPartner({id: selectPlayer.current.value, username: selectPlayer.current.innerText})
     setFirstTurn("my turn")
@@ -58,7 +49,6 @@ export default function App() {
     })
 
     connection.on("startGame", ()=>{
-        console.log("start");
         setView("game")
     })
 

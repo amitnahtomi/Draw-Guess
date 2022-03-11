@@ -6,8 +6,9 @@ export default function Game(props) {
     const [view, setView] = useState(props.firstTurn)
     const [words, setWords] = useState([])
     const [selectedWord, setSelectedWord] = useState("")
-    const [guess, setGuess] = useState({draw: "", word: ""})
+    const [guess, setGuess] = useState({draw: "", word: "", currentScore: 0, addScore: 0})
     const [pen, setPen] = useState("black")
+    const [score, setScore] = useState(0)
     const wordsSelection = useRef(null)
     const dificulatySelection = useRef(null)
     const selectedDificulity = useRef(null)
@@ -20,13 +21,13 @@ export default function Game(props) {
         wordsSelection.current.hidden = false
         dificulatySelection.current.hidden = true
 
-        if(selectedDificulity.current.value === "easy"){
+        if(selectedDificulity.current.value === '1'){
             setWords(randomWords({exactly: 3, maxLength: 3}))
         }
-        else if(selectedDificulity.current.value === "medium"){
+        else if(selectedDificulity.current.value === '3'){
             setWords(randomWords({exactly: 3, maxLength: 6, minLength: 4}))
         }
-        else if(selectedDificulity.current.value === "hard"){
+        else if(selectedDificulity.current.value === '5'){
             setWords(randomWords({exactly: 3, maxLength: 10, minLength: 7}))
         }
     }
@@ -37,12 +38,13 @@ export default function Game(props) {
     }
 
     const sendGuess = () => {
-        props.connection.emit("newGuess", ({partner: props.partner.id, draw: canvasDraw.current.toDataURL(), word: selectedWord}))
+        props.connection.emit("newGuess", ({partner: props.partner.id, draw: canvasDraw.current.toDataURL(), word: selectedWord, currentScore: score, addScore: Number(selectedDificulity.current.value)}))
         setView("waiting")
     }
 
     const checkGuess = () => {
         if(guessInput.current.value === guess.word){
+            setScore(guess.addScore + guess.currentScore)
             setView("my turn")
         }
         else {
@@ -66,9 +68,10 @@ export default function Game(props) {
             <div ref={dificulatySelection}>
             <h1>Select game dificulaty</h1>
             <select ref={selectedDificulity}>
-                <option value={"easy"}>Easy</option>
-                <option value={"medium"}>Medium</option>
-                <option value={"hard"}>Hard</option>
+                <option></option>
+                <option value={'1'}>Easy</option>
+                <option value={'3'}>Medium</option>
+                <option value={'5'}>Hard</option>
             </select>
             <button onClick={setDificulity}>Continue</button>
             </div>
@@ -88,12 +91,14 @@ export default function Game(props) {
                     <button onClick={sendGuess}>send</button>
             </div>
             <button onClick={props.quitGame}>quit game</button>
+            <div>{score}</div>
         </div>
     }
     else if(view === "waiting") {
         return <div>
-            <div>waiting</div>
             <button onClick={props.quitGame}>quit game</button>
+            <div>waiting</div>
+            <div>{score}</div>
         </div>
     }
     else if(view === "guessing"){
@@ -103,6 +108,7 @@ export default function Game(props) {
             <button onClick={checkGuess}>send</button>
             <div ref={guessReaction} hidden={true}>wrong</div>
             <button onClick={props.quitGame}>quit game</button>
+            <div>{score}</div>
         </div>
     }
 }
