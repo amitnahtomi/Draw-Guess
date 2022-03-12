@@ -103,7 +103,7 @@ export default function Game(props) {
         return <div style={{textAlign: "center"}}>
             <button style={{float: "right", fontSize: "250%"}} onClick={props.quitGame}>Quit game</button>
             <div className="score">Game score: {score}</div>
-            <img style={{borderRadius: "5px"}} alt="waiting" src="https://media0.giphy.com/media/tXL4FHPSnVJ0A/giphy.gif?cid=ecf05e477ybpwhecrfbwggytf47xe2gnnq2ex98rjnwn88sm&rid=giphy.gif&ct=g"></img>
+            <img style={{borderRadius: "5px", marginTop: "4%"}} alt="waiting" src="https://media0.giphy.com/media/tXL4FHPSnVJ0A/giphy.gif?cid=ecf05e477ybpwhecrfbwggytf47xe2gnnq2ex98rjnwn88sm&rid=giphy.gif&ct=g"></img>
             <div style={{marginBottom: "5%", fontSize: "200%", color: "cornflowerblue"}}>Waiting for {props.partner.username} to play</div>
         </div>
     }
