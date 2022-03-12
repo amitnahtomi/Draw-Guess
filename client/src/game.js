@@ -62,6 +62,7 @@ export default function Game(props) {
 
     useEffect(()=>{
         props.connection.on("guess", (details)=>{
+            setScore(details.currentScore)
             setGuess(details)
             setView("guessing")
         })
