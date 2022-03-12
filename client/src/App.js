@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Game from "./game";
+import './App.css'
 
 const connection = io("http://localhost:4000")
 
@@ -16,19 +17,20 @@ export default function App() {
   const nameReaction = useRef(null)
 
   const setUserInfo = async () => {
+    if(username.current.value === ""){return}
     setUser({id: user.id, username: username.current.value});
     connection.emit("user", {id: connection.id, username: username.current.value})
     setView("select player")
   }
 
   const sendGameInvitation = () => {
-    connection.emit("gameRequest", {id: selectPlayer.current.value, username: selectPlayer.current.innerText, fromId: user.id, fromUsername: user.username})
+    connection.emit("gameRequest", {id: selectPlayer.current.value, username: selectPlayer.current.innerText, fromId: connection.id, fromUsername: user.username})
     setPartner({id: selectPlayer.current.value, username: selectPlayer.current.innerText})
     setFirstTurn("my turn")
   }
 
   const acceptGameInvitation = () => {
-      connection.emit("acceptInvitation", {from: user, to: partner})
+      connection.emit("acceptInvitation", {from: connection.id, to: partner.id})
       setFirstTurn("waiting")
       setGameInvitation(false)
   }
@@ -60,9 +62,11 @@ export default function App() {
   },[])
 
   if(view === "welcome"){
-      return <div style={{textAlign: "center"}}>
-      <input type={"text"} ref={username} placeholder={"Select your user name"}></input>
-      <button onClick={setUserInfo}>Log in</button>
+      return <div style={{textAlign: "center", marginTop: "15%"}}>
+      <h1>Drew & guess</h1>
+      <h4>Before we start, please select your username. Try to be creative.</h4>
+      <input className="username" type={"text"} ref={username} placeholder={"Select your user name"}></input>
+      <button className="login" onClick={setUserInfo}>Log in</button>
       <div hidden={true} ref={nameReaction}>Name already exists</div>
       </div>
   }

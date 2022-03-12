@@ -8,15 +8,6 @@ const io = require("socket.io")(http, {
 
   const users = []
 
-  function getId(username) {
-      for(let i = 0; i < users.length; i++){
-          if(users[i].username === username){
-              return users[i].id
-          }
-      }
-      return false
-  }
-
 io.on("connection", (socket) => {
     socket.on("user", (user)=>{
         users.push(user)
@@ -33,12 +24,12 @@ io.on("connection", (socket) => {
     })
 
     socket.on("gameRequest", (player)=>{
-        io.to(player.id).emit("sendGameReq", {id: getId(player.fromUsername), username: player.fromUsername})
+        io.to(player.id).emit("sendGameReq", {id: player.fromId, username: player.fromUsername})
     })
 
     socket.on("acceptInvitation", (details)=>{
-        io.to(getId(details.from.username)).emit("startGame")
-        io.to(getId(details.to.username)).emit("startGame")
+        io.to(details.from).emit("startGame")
+        io.to(details.to).emit("startGame")
     })
 
     socket.on("disconnect", () => {
