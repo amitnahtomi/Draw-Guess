@@ -5,6 +5,10 @@ body {
 
 button {
     cursor: pointer;
+    background-color: cornflowerblue;
+    border: 3px solid cornflowerblue;
+    border-radius: 100px;
+    color: white;
 }
 
 button:focus {
@@ -27,6 +31,7 @@ h4 {
     width: 19%;
     font-size: 140%;
     margin-right: 5px;
+    color: cornflowerblue;
     border: 3px solid cornflowerblue;
     border-radius: 4px;
 }
@@ -34,9 +39,35 @@ h4 {
 .login {
     width: 8%;
     font-size: 130%;
-    background-color: cornflowerblue;
-    border: 3px solid cornflowerblue;
-    border-radius: 100px;
-    color: white;
 }
 
+.selectPlayer {
+    width: 12%;
+    font-size: 200%;
+    margin-right: 5px;
+    background-color: white;
+    color: cornflowerblue;
+    border: 3px solid cornflowerblue;
+    border-radius: 4px;
+    overflow-y: scroll;
+}
+
+.gameInvitation {
+    background-color: white;
+    width: 25%;
+    border: 3px solid cornflowerblue;
+    border-radius: 4px;
+    margin: auto;
+    margin-top: 3%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.score {
+    float: left;
+    color: cornflowerblue;
+    font-size: 200%;
+    border: 5px solid cornflowerblue;
+    border-radius: 4px;
+    padding: 5px;
+}

@@ -14,7 +14,6 @@ export default function App() {
   const [firstTurn, setFirstTurn] = useState("")
   const username = useRef(null)
   const selectPlayer = useRef(null)
-  const nameReaction = useRef(null)
 
   const setUserInfo = async () => {
     if(username.current.value === ""){return}
@@ -24,6 +23,7 @@ export default function App() {
   }
 
   const sendGameInvitation = () => {
+    if(selectPlayer.current.innerText === ""){return}
     connection.emit("gameRequest", {id: selectPlayer.current.value, username: selectPlayer.current.innerText, fromId: connection.id, fromUsername: user.username})
     setPartner({id: selectPlayer.current.value, username: selectPlayer.current.innerText})
     setFirstTurn("my turn")
@@ -41,8 +41,8 @@ export default function App() {
 
   useEffect(()=>{ 
     
-    connection.on("userUpdate", (updatedUsersList)=>{
-        setUsersList(updatedUsersList);
+    connection.on("userUpdate", (updatedUsersList)=>{ 
+      setUsersList(updatedUsersList);
     })
 
     connection.on("sendGameReq", (player)=>{
@@ -63,26 +63,26 @@ export default function App() {
 
   if(view === "welcome"){
       return <div style={{textAlign: "center", marginTop: "15%"}}>
-      <h1>Drew & guess</h1>
+      <h1>Draw & Guess</h1>
       <h4>Before we start, please select your username. Try to be creative.</h4>
       <input className="username" type={"text"} ref={username} placeholder={"Select your user name"}></input>
       <button className="login" onClick={setUserInfo}>Log in</button>
-      <div hidden={true} ref={nameReaction}>Name already exists</div>
       </div>
   }
   else if(view === "select player") {
-    return <div>
-    <select ref={selectPlayer}>
-      {usersList.map((u) => {
+    return <div style={{textAlign: "center", marginTop: "15%"}}>
+    <h1>Choose a player to play with</h1>
+    <select className="selectPlayer" ref={selectPlayer}>
+      {usersList.sort(sorting).map((u) => {
         if(u.username !== user.username){
           return <option value={u.id}>{u.username}</option>
         }
       })}
     </select>
-    <button onClick={sendGameInvitation}>send invitation</button>
-    <div hidden={gameInvitation}>
-          <div>you got a game invitation</div>
-          <button onClick={acceptGameInvitation}>accept invitation</button>
+    <button style={{fontSize: "180%"}} onClick={sendGameInvitation}>send invitation</button>
+    <div className="gameInvitation" hidden={gameInvitation}>
+          <div style={{color: "cornflowerblue", fontSize: "130%", marginBottom: "4px"}}>You got a game invitation from {partner.username}</div>
+          <button style={{marginRight: "4px"}} onClick={acceptGameInvitation}>accept invitation</button>
           <button onClick={declineGameInvitation}>decline invitation</button>
       </div>
     </div>
@@ -90,4 +90,17 @@ export default function App() {
   else if(view === "game"){
       return <Game connection={connection} firstTurn={firstTurn} partner={partner} quitGame={declineGameInvitation} />
   }
+}
+
+function sorting(a, b) {
+  let fa = a.username
+  let fb = b.username
+
+  if (fa < fb) {
+      return -1;
+  }
+  if (fa > fb) {
+      return 1;
+  }
+  return 0;
 }
