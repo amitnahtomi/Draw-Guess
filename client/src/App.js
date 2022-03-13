@@ -3,8 +3,8 @@ import io from "socket.io-client";
 import Game from "./game";
 import './App.css'
 
-const connection = io("/")
-//const connection = io("http://localhost:4000")
+//const connection = io("/")
+const connection = io("http://localhost:4000")
 
 export default function App() {
   const [view, setView] = useState("welcome")
@@ -83,7 +83,7 @@ export default function App() {
     <button style={{fontSize: "180%"}} onClick={sendGameInvitation}>send invitation</button>
     <div className="gameInvitation" hidden={gameInvitation}>
           <div style={{color: "cornflowerblue", fontSize: "130%", marginBottom: "4px"}}>You got a game invitation from {partner.username}</div>
-          <button style={{marginRight: "4px"}} onClick={acceptGameInvitation}>accept invitation</button>
+          <button style={{marginRight: "4px", marginBottom: "3px"}} onClick={acceptGameInvitation}>accept invitation</button>
           <button onClick={declineGameInvitation}>decline invitation</button>
       </div>
     </div>

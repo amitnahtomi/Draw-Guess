@@ -28,7 +28,8 @@ h4 {
 }
 
 .username {
-    width: 19%;
+    /*width: 19%;*/
+    min-width: 200px;
     font-size: 140%;
     margin-right: 5px;
     color: cornflowerblue;
@@ -37,12 +38,14 @@ h4 {
 }
 
 .login {
-    width: 8%;
+    /*width: 8%;*/
+    min-width: 30px;
     font-size: 130%;
 }
 
 .selectPlayer {
-    width: 12%;
+    /*width: 12%;*/
+    min-width: 50px;
     font-size: 200%;
     margin-right: 5px;
     background-color: white;
@@ -55,6 +58,7 @@ h4 {
 .gameInvitation {
     background-color: white;
     width: 25%;
+    min-width: 200px;
     border: 3px solid cornflowerblue;
     border-radius: 4px;
     margin: auto;

@@ -14,7 +14,7 @@ const io = require("socket.io")(http, {
     }
   });
 
-app.use(express.static("./build"))//
+app.use(express.static("./build"))
 
 app.get('/', (_req, res) => {
     res.sendFile('./build/index.html');
