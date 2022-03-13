@@ -26,10 +26,10 @@ export default function Game(props) {
             setWords(randomWords({exactly: 3, maxLength: 3}))
         }
         else if(selectedDificulity.current.value === '3'){
-            setWords(randomWords({exactly: 3, maxLength: 6, minLength: 4}))
+            setWords(randomWords({exactly: 3, maxLength: 6}))
         }
         else if(selectedDificulity.current.value === '5'){
-            setWords(randomWords({exactly: 3, maxLength: 10, minLength: 7}))
+            setWords(randomWords({exactly: 3, maxLength: 10}))
         }
     }
 

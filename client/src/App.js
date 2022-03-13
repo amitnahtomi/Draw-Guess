@@ -3,7 +3,8 @@ import io from "socket.io-client";
 import Game from "./game";
 import './App.css'
 
-const connection = io("http://localhost:4000")
+const connection = io("/")
+//const connection = io("http://localhost:4000")
 
 export default function App() {
   const [view, setView] = useState("welcome")
