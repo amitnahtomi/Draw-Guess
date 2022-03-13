@@ -70,8 +70,14 @@ h4 {
 .score {
     float: left;
     color: cornflowerblue;
-    font-size: 200%;
+    font-size: 150%;
     border: 5px solid cornflowerblue;
     border-radius: 4px;
     padding: 5px;
 }
+
+@media only screen and (max-width: 600px) {
+    img {
+      width: 100%;
+    }
+  }

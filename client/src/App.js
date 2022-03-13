@@ -26,7 +26,12 @@ export default function App() {
   const sendGameInvitation = () => {
     if(selectPlayer.current.value === ""){return}
     connection.emit("gameRequest", {id: selectPlayer.current.value, username: selectPlayer.current.innerText, fromId: connection.id, fromUsername: user.username})
-    setPartner({id: selectPlayer.current.value, username: selectPlayer.current.innerText})
+    for(let i = 0; i < usersList.length; i++){
+      if(selectPlayer.current.value === usersList[i].id){
+        setPartner({id: selectPlayer.current.value, username: usersList[i].username})
+        break
+      }
+    }
     setFirstTurn("my turn")
   }
 

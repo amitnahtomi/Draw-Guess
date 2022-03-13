@@ -80,11 +80,11 @@ export default function Game(props) {
     
     if(view === "my turn"){
         return <div style={{textAlign: "center"}}>
-            <button style={{float: "right", fontSize: "250%"}} onClick={props.quitGame}>Quit game</button>
+            <button style={{float: "right", fontSize: "140%"}} onClick={props.quitGame}>Quit game</button>
             <div className="score">Game score: {score}</div>
             <div ref={dificulatySelection}>
             <h1 style={{marginBottom: "10%"}}>Select difficulty</h1>
-            <select className="selectPlayer" style={{fontSize: "250%", marginRight: "3%", width: "15%", minWidth: "100px"}} ref={selectedDificulity}>
+            <select className="selectPlayer" style={{fontSize: "250%", marginRight: "3%", width: "15%", minWidth: "200px"}} ref={selectedDificulity}>
                 <option></option>
                 <option value={'1'}>Easy</option>
                 <option value={'3'}>Medium</option>
@@ -112,7 +112,7 @@ export default function Game(props) {
     }
     else if(view === "waiting") {
         return <div style={{textAlign: "center"}}>
-            <button style={{float: "right", fontSize: "250%"}} onClick={props.quitGame}>Quit game</button>
+            <button style={{float: "right", fontSize: "140%"}} onClick={props.quitGame}>Quit game</button>
             <div className="score">Game score: {score}</div>
             <img style={{borderRadius: "5px", marginTop: "4%"}} alt="waiting" src="https://media0.giphy.com/media/tXL4FHPSnVJ0A/giphy.gif?cid=ecf05e477ybpwhecrfbwggytf47xe2gnnq2ex98rjnwn88sm&rid=giphy.gif&ct=g"></img>
             <div style={{marginBottom: "5%", fontSize: "200%", color: "cornflowerblue"}}>Waiting for {props.partner.username} to play</div>
@@ -120,10 +120,10 @@ export default function Game(props) {
     }
     else if(view === "guessing"){
         return <div style={{textAlign: "center"}}>
-            <button style={{float: "right", fontSize: "250%"}} onClick={props.quitGame}>Quit game</button>
+            <button style={{float: "right", fontSize: "140%"}} onClick={props.quitGame}>Quit game</button>
             <div className="score">Game score: {score}</div>
             <h1>Guess the word</h1>
-            <img ref={guessReaction} style={{border: "2px solid cornflowerblue", borderRadius: "4px", height: "300px", width: "650px", backgroundColor: "white", width: "450px"}} alt="guess" src={guess.draw}></img>
+            <img ref={guessReaction} style={{border: "2px solid cornflowerblue", borderRadius: "4px", height: "300px", backgroundColor: "white", maxWidth: "550px"}} alt="guess" src={guess.draw}></img>
             <br /><input style={{color: "cornflowerblue", marginTop: "1%", marginRight: "1%", fontSize: "150%", border: "2px solid cornflowerblue", borderRadius: "4px"}} ref={guessInput} placeholder="What is your guess" type={"text"}></input>
             <button style={{fontSize: "150%"}} onClick={checkGuess}>Send</button>
             <div hidden={true}>wrong</div>
