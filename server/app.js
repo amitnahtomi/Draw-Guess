@@ -1,5 +1,12 @@
 const express = require('express')
+require("dotenv").config()
+const cors = require('cors')
 const app = require("express")();
+app.use(express.json());
+app.use(cors());
+app.use(express.urlencoded({
+    extended: true
+}));
 const http = require("http").createServer(app);
 const io = require("socket.io")(http, {
     cors: {
@@ -7,7 +14,11 @@ const io = require("socket.io")(http, {
     }
   });
 
-app.use(express.static(__dirname + "../client/build"))
+app.use(express.static("./build"))//
+
+app.get('/', (_req, res) => {
+    res.sendFile('./build/index.html');
+  });
 
   const users = []
 
@@ -46,6 +57,6 @@ io.on("connection", (socket) => {
     })
 });
 
-http.listen(4000, function () {
+http.listen(process.env.PORT || 4000, function () {
     console.log("listening on port 4000");
   });
