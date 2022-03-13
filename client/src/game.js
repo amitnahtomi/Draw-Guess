@@ -44,7 +44,7 @@ export default function Game(props) {
     }
 
     const checkGuess = () => {
-        if(guessInput.current.value === guess.word){
+        if(guessInput.current.value.toLowerCase() === guess.word){
             guessReaction.current.src = "https://media4.giphy.com/media/3o7abKhOpu0NwenH3O/200w.webp?cid=ecf05e472txao2lcug1htbz0gpl0ixdxcree22zmifrkyc4b&rid=200w.webp&ct=g"
             setTimeout(()=>{
                 setScore(guess.addScore + guess.currentScore)
@@ -58,6 +58,16 @@ export default function Game(props) {
             },2500)
             return
         }
+    }
+
+    const wordVisibility = (e, word) => {
+        let buttons = document.getElementsByTagName("button")
+        for(let i = 0; i < buttons.length; i++){
+                buttons[i].style.backgroundColor = "cornflowerblue"
+                buttons[i].style.color = "white"
+        }
+        e.target.style.backgroundColor = "white"
+        e.target.style.color = "cornflowerblue"
     }
 
     useEffect(()=>{
@@ -74,25 +84,25 @@ export default function Game(props) {
             <div className="score">Game score: {score}</div>
             <div ref={dificulatySelection}>
             <h1 style={{marginBottom: "10%"}}>Select difficulty</h1>
-            <select className="selectPlayer" style={{fontSize: "250%", marginRight: "3%", width: "15%"}} ref={selectedDificulity}>
+            <select className="selectPlayer" style={{fontSize: "250%", marginRight: "3%", width: "15%", minWidth: "100px"}} ref={selectedDificulity}>
                 <option></option>
                 <option value={'1'}>Easy</option>
                 <option value={'3'}>Medium</option>
                 <option value={'5'}>Hard</option>
             </select>
-            <button style={{fontSize: "230%"}} onClick={setDificulity}>Continue</button>
+            <br /><button style={{fontSize: "230%", marginTop: "13px"}} onClick={setDificulity}>Continue</button>
             </div>
             <div ref={wordsSelection} hidden={true}>
                 <h1>Select word</h1>
                 {words.map((word)=>{
-                    return <button style={{fontSize: "300%", padding: "1%", margin: "1%", borderRadius: "20px"}} onClick={()=>{setSelectedWord(word)}}>{word}</button>
+                    return <button style={{fontSize: "300%", padding: "1%", margin: "1%", borderRadius: "20px"}} onClick={(e)=>{ setSelectedWord(word); wordVisibility(e, word)}}>{word}</button>
                 })}
                 <br /><button style={{marginTop: "5%", fontSize: "200%"}} onClick={setWord}>Continue</button>
             </div>
             <div style={{textAlign: "center"}} ref={drawWord} hidden={true}>
                 <h1>Draw !!!</h1>
-                <div style={{border: "2px solid cornflowerblue", borderRadius: "4px", height: "300px", width: "650px", margin: "auto", backgroundColor: "white"}}>
-                    <SignatureCanvas ref={canvasDraw} penColor={pen} canvasProps={{height: 300, width: 650}} />
+                <div style={{border: "2px solid cornflowerblue", borderRadius: "4px", height: "300px", width: "450px", margin: "auto", backgroundColor: "white"}}>
+                    <SignatureCanvas ref={canvasDraw} penColor={pen} canvasProps={{height: 300, width: 450}} />
                 </div>
                 <input style={{width: "5%"}} type={"color"} onChange={(e)=>{setPen(e.target.value)}}></input>
                     <button style={{margin: "1%", fontSize: "150%"}} onClick={()=>{canvasDraw.current.clear()}}>clear</button>
@@ -113,7 +123,7 @@ export default function Game(props) {
             <button style={{float: "right", fontSize: "250%"}} onClick={props.quitGame}>Quit game</button>
             <div className="score">Game score: {score}</div>
             <h1>Guess the word</h1>
-            <img ref={guessReaction} style={{border: "2px solid cornflowerblue", borderRadius: "4px", height: "300px", width: "650px", backgroundColor: "white"}} alt="guess" src={guess.draw}></img>
+            <img ref={guessReaction} style={{border: "2px solid cornflowerblue", borderRadius: "4px", height: "300px", width: "650px", backgroundColor: "white", width: "450px"}} alt="guess" src={guess.draw}></img>
             <br /><input style={{color: "cornflowerblue", marginTop: "1%", marginRight: "1%", fontSize: "150%", border: "2px solid cornflowerblue", borderRadius: "4px"}} ref={guessInput} placeholder="What is your guess" type={"text"}></input>
             <button style={{fontSize: "150%"}} onClick={checkGuess}>Send</button>
             <div hidden={true}>wrong</div>

@@ -44,8 +44,8 @@ h4 {
 }
 
 .selectPlayer {
-    /*width: 12%;*/
-    min-width: 50px;
+    width: 12%;
+    min-width: 150px;
     font-size: 200%;
     margin-right: 5px;
     background-color: white;
@@ -57,8 +57,8 @@ h4 {
 
 .gameInvitation {
     background-color: white;
+    min-width: 150px;
     width: 25%;
-    min-width: 200px;
     border: 3px solid cornflowerblue;
     border-radius: 4px;
     margin: auto;
